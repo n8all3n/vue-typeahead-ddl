@@ -6,7 +6,7 @@
     <input type="button" @click="buttonClick();" value="Click it"/>
     <div class="row">
       <div class="col-lg-4">
-          <autocomplete @loadResults="loadResults" :isAsync="true" :items="ddlItems" :valueField="'Id'" :textField="'Address'"  v-model="searchVal" @itemSelected="ddlItemSelected" />
+          <autocomplete @loadResults="loadResults" :isAsync="true" :items="ddlItems" :valueField="'id'" :textField="'login'"  v-model="searchVal" @itemSelected="ddlItemSelected" />
       </div>
     </div>
   
@@ -27,8 +27,9 @@ export default {
   },
   data() {
     return{
+      ddlLoaded: false,
       ddlItems: [],
-      searchVal: '1234'
+      searchVal: 'n8'
     }
   },
   methods: {
@@ -37,10 +38,12 @@ export default {
     },
     loadResults(search) {
       var vm = this;
-      axios.get('/api/parcel/query?search=' + search).then(response => {
-          if (response.data.status_code === 200) {
-            vm.ddlItems = response.data.results;
+      axios.get('https://api.github.com/search/users?q=' + search).then(response => {
+          if (response.status === 200) {
+            vm.ddlItems = response.data.items;
           }
+      }).catch(function(err){
+        console.log(err);
       });
     },
     ddlItemSelected(selectedItem) {

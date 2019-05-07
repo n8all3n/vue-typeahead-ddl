@@ -13,16 +13,17 @@
      <span class="loading" v-if="isLoading">Loading...</span>
        <span
         v-else
-        v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" :class="{ 'is-active': i === arrowCounter }">
-        {{result[textField] }}
+        v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" 
+        :class="{ 'is-active': i === arrowCounter }">
+        {{result[textField]}}
       </span>
     </div>
   </div>
 </template>
 <script>
+/* eslint-disable */
+  import debounce from '../services/debounce.js'
   export default {
-    
-    /* eslint-disable */
     name: 'autocomplete',
 
     props: {
@@ -57,21 +58,27 @@
         arrowCounter: 0,
         activeKey: -1,
         selectedValue: {},
+        dataInitLoaded: false
       };
     },
     methods: {
       onInputClick() {
-        if (this.value && this.value.length>= 4) {
-           if (this.results.length > 0) {
-             this.isOpen = true;
-           }
+        if (this.value && this.value.length>= 2) {
+          if(!this.dataInitLoaded) {
+            this.dataInitLoaded = true;
+            this.isLoading = true;
+            this.isOpen = true;
+            this.$emit('loadResults', this.value);
+          } else if (this.results.length > 0) {
+            this.isOpen = true;
+          }
         }
       },
       onChange(val) {
         // Let's warn the parent that a change was made
         this.$emit('input', val);
 
-        if (val && val.length >=4) {
+        if (val && val.length >=2) {
           // Is the data given by an outside ajax request?
           if (this.isAsync) {
               this.isLoading = true;
@@ -85,7 +92,6 @@
         }
 
       },
-
       filterResults() {
         // first uncapitalize all the things
         this.results = this.items.filter((item) => {
