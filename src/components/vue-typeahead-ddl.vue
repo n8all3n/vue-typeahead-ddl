@@ -9,16 +9,14 @@
       @keydown.enter="onEnter"
       @click="onInputClick();"
     />
-    <ul id="autocomplete-results"  v-show="isOpen" class="autocomplete-results">
-      <li class="loading" v-if="isLoading">
-        Loading...
-      </li>
-      <li
+    <div id="autocomplete-results"  v-show="isOpen" class="autocomplete-results">
+     <span class="loading" v-if="isLoading">Loading...</span>
+       <span
         v-else
         v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" :class="{ 'is-active': i === arrowCounter }">
         {{result[textField] }}
-      </li>
-    </ul>
+      </span>
+    </div>
   </div>
 </template>
 <script>
@@ -113,7 +111,9 @@
         }
       },
       onEnter() {
-        this.search = this.results[this.arrowCounter];
+        var selectedResult = this.results[this.arrowCounter];
+        this.$emit('input', selectedResult[this.textField])
+        this.$emit('itemSelected', selectedResult);
         this.isOpen = false;
         this.arrowCounter = -1;
       },
@@ -154,15 +154,15 @@
     overflow: auto;
     width: 100%;
     max-height: 350px;
-    white-space: pre;
-    line-height: 60%;
   }
 
   .autocomplete-result {
-    list-style: none;
+    position: relative;
+    display: block;
+    background-color: #fff;
     text-align: left;
-    padding: 4px 2px;
-    cursor: pointer;
+    margin: 0;
+    font: inherit;
   }
 
   .autocomplete-result.is-active,
