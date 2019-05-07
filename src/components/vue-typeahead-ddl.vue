@@ -18,7 +18,7 @@
       v-else-if="!isLoading && results.length > 0"
       v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" 
       :class="{ 'is-active': i === arrowCounter }">
-      {{result[textField]}}
+        {{isAsync ? result[textField] : result}}
       </span>
     </div>
   </div>
@@ -43,12 +43,12 @@
       valueField: {
         type: String,
         required: false,
-        default: false
+        default:  ''
       },
       textField: {
         type: String,
         required: false,
-        default: false
+        default: ''
       }
     },
 
@@ -69,12 +69,16 @@
     methods: {
       onInputClick() {
         if (this.value && this.value.length>= 2) {
-          if(!this.dataInitLoaded) {
-            this.dataInitLoaded = true;
-            this.isLoading = true;
-            this.$emit('loadResults', this.value);
+          if (this.isAsync) {
+              if(!this.dataInitLoaded) {
+              this.dataInitLoaded = true;
+              this.isLoading = true;
+              this.$emit('loadResults', this.value);
+            }
+            this.isOpen = true;
+          } else {
+            this.isOpen = true;
           }
-          this.isOpen = true;
         } else {
           this.results = [];
         }
@@ -86,16 +90,17 @@
         if (val && val.length >=2) {
           // Is the data given by an outside ajax request?
           if (this.isAsync) {
-             clearTimeout(this.debounceFunc);
-             this.debounceFunc = setTimeout(() => {
+              clearTimeout(this.debounceFunc);
+              this.debounceFunc = setTimeout(() => {
               this.isLoading = true;
               this.isOpen = true;
               this.$emit('loadResults', val)
              }, 500);
           } else {
-              // Let's  our flat array
-              this.filterResults();
-              this.isOpen = true;
+            this.isOpen= true
+            this.results = this.items.filter((item) => {
+              return item.toLowerCase().indexOf(val.toLowerCase()) > -1;
+            });
           }
         } else {
           this.results = [];
@@ -103,10 +108,10 @@
         }
 
       },
-      filterResults() {
+      filterResults(val) {
         // first uncapitalize all the things
         this.results = this.items.filter((item) => {
-          return item.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+          return item.toLowerCase().indexOf(val.toLowerCase()) > -1;
         });
       },
       setResult(result, key) {
@@ -128,11 +133,19 @@
         }
       },
       onEnter() {
-        var selectedResult = this.results[this.arrowCounter];
-        this.$emit('input', selectedResult[this.textField])
-        this.$emit('itemSelected', selectedResult);
-        this.isOpen = false;
-        this.arrowCounter = -1;
+        if (this.arrowCounter >= 0 && this.results.length > 0) {
+          var selectedResult = this.results[this.arrowCounter];
+          if(selectedResult) {
+            this.$emit('input', selectedResult[this.textField])
+            this.$emit('itemSelected', selectedResult);
+            this.isOpen = false;
+            this.arrowCounter = -1;
+          }
+        } else {
+          this.isOpen = true;
+          this.arrowCounter = 0;
+        }
+      
       },
       handleClickOutside(evt) {
         if (!this.$el.contains(evt.target)) {

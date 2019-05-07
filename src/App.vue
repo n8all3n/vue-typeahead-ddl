@@ -5,8 +5,13 @@
     <!-- <vue-typeahead-ddl></vue-typeahead-ddl> -->
     <input type="button" @click="buttonClick();" value="Click it"/>
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-2">
           <autocomplete @loadResults="loadResults" :isAsync="true" :items="ddlItems" :valueField="'id'" :textField="'login'"  v-model="searchVal" @itemSelected="ddlItemSelected" />
+      </div>
+    </div>
+     <div class="row">
+      <div class="col-lg-2">
+          <autocomplete :isAsync="false" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-model="fruitVal"  />
       </div>
     </div>
   
@@ -29,7 +34,8 @@ export default {
     return{
       ddlLoaded: false,
       ddlItems: [],
-      searchVal: 'n8'
+      searchVal: 'n8',
+      fruitVal: ''
     }
   },
   methods: {
