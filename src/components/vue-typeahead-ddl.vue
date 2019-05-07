@@ -22,7 +22,7 @@
 </template>
 <script>
 /* eslint-disable */
-  import debounce from '../services/debounce.js'
+  import { clearTimeout, setTimeout } from 'timers';
   export default {
     name: 'autocomplete',
 
@@ -58,7 +58,9 @@
         arrowCounter: 0,
         activeKey: -1,
         selectedValue: {},
-        dataInitLoaded: false
+        dataInitLoaded: false,
+
+        debounceFunc: null
       };
     },
     methods: {
@@ -81,9 +83,12 @@
         if (val && val.length >=2) {
           // Is the data given by an outside ajax request?
           if (this.isAsync) {
+             clearTimeout(this.debounceFunc);
+             this.debounceFunc = setTimeout(() => {
               this.isLoading = true;
               this.isOpen = true;
               this.$emit('loadResults', val)
+             }, 500);
           } else {
               // Let's  our flat array
               this.filterResults();
