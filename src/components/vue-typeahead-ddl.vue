@@ -11,11 +11,14 @@
     />
     <div id="autocomplete-results"  v-show="isOpen" class="autocomplete-results">
      <span class="loading" v-if="isLoading">Loading...</span>
-       <span
-        v-else
-        v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" 
-        :class="{ 'is-active': i === arrowCounter }">
-        {{result[textField]}}
+      <span v-else-if="!isLoading && results.length == 0">
+        No Results Found...
+      </span>
+      <span
+      v-else-if="!isLoading && results.length > 0"
+      v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" 
+      :class="{ 'is-active': i === arrowCounter }">
+      {{result[textField]}}
       </span>
     </div>
   </div>
@@ -69,11 +72,11 @@
           if(!this.dataInitLoaded) {
             this.dataInitLoaded = true;
             this.isLoading = true;
-            this.isOpen = true;
             this.$emit('loadResults', this.value);
-          } else if (this.results.length > 0) {
-            this.isOpen = true;
           }
+          this.isOpen = true;
+        } else {
+          this.results = [];
         }
       },
       onChange(val) {
@@ -94,6 +97,9 @@
               this.filterResults();
               this.isOpen = true;
           }
+        } else {
+          this.results = [];
+          this.isOpen = false;
         }
 
       },
