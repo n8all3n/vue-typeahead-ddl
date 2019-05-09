@@ -49,6 +49,11 @@
         type: String,
         required: false,
         default: ''
+      },
+      minChars: {
+        type: Number,
+        required: false,
+        default: 2
       }
     },
 
@@ -68,26 +73,27 @@
     },
     methods: {
       onInputClick() {
-        if (this.value && this.value.length>= 2) {
+        if (this.value && this.value.length>= this.minChars) {
           if (this.isAsync) {
-              if(!this.dataInitLoaded) {
-              this.dataInitLoaded = true;
-              this.isLoading = true;
-              this.$emit('loadResults', this.value);
-            }
+            this.isLoading = true;
+            this.$emit('loadResults', this.value);
             this.isOpen = true;
           } else {
             this.isOpen = true;
           }
         } else {
-          this.results = [];
+          if (!this.isAsync) {
+            this.filterResults(this.search);
+            this.isOpen = true;
+            this.isLoading = false;
+          }
         }
       },
       onChange(val) {
         // Let's warn the parent that a change was made
         this.$emit('input', val);
 
-        if (val && val.length >=2) {
+        if (val && val.length >= this.minChars) {
           // Is the data given by an outside ajax request?
           if (this.isAsync) {
               clearTimeout(this.debounceFunc);
@@ -98,13 +104,17 @@
              }, 500);
           } else {
             this.isOpen= true
-            this.results = this.items.filter((item) => {
-              return item.toLowerCase().indexOf(val.toLowerCase()) > -1;
-            });
+            this.filterResults(val);
           }
-        } else {
-          this.results = [];
-          this.isOpen = false;
+        } 
+        else {
+          if (this.isAsync) {
+            this.results = [];
+            this.isOpen = false;
+          } else {
+            this.results = this.items;
+          }
+          
         }
 
       },
@@ -115,11 +125,13 @@
         });
       },
       setResult(result, key) {
-        this.$emit('input', result[this.textField]);
+        if (this.isAsync) {
+          this.$emit('input', result[this.textField]);
+        } else {
+          this.$emit('input', result);
+        }
+        
         this.$emit('itemSelected', result);
-
-        // this.value = result;
-        // this.activeKey = key;
         this.isOpen = false;
       },
       onArrowDown(evt) {
@@ -156,8 +168,15 @@
     },
     watch: {
       items: function (val, oldValue) {
-        this.results = val;
-        this.isLoading = false;
+        if (this.isAsync) {
+          this.results = val;
+          this.isLoading = false;
+        } else {
+          if (val.length !== oldValue.length) {
+            this.results = val;
+            this.isLoading = false;
+          }
+        }
       },
     },
     mounted() {
@@ -168,7 +187,7 @@
     }
   };
 </script>
-<style>
+<style scoped>
   .autocomplete-input {
     width:100%;
   }
@@ -180,10 +199,12 @@
   .autocomplete-results {
     padding: 0;
     margin: 0;
-    border: 1px solid #eeeeee;
+    border: 1px solid gray;
     overflow: auto;
     width: 100%;
     max-height: 350px;
+    position: absolute;
+    z-index: 9999;
   }
 
   .autocomplete-result {
