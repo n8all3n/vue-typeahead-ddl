@@ -2,19 +2,6 @@
   <div>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" id="mainNav">
         <a class="navbar-brand" href="#">vue-typeahead-ddl</a>
-        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button> -->
-        <!-- <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-          <ul class="navbar-nav mr-auto nav-pills">
-            <li class="nav-item">
-              <a class="nav-link" href="#home">Home<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#reference">Reference<span class="sr-only"></span></a>
-            </li>
-          </ul>
-        </div> -->
     </nav>
     <main role="main" class="container">
       <div class="starter-template">
@@ -148,13 +135,11 @@
 <script>
 /* eslint-disable */
 import autocomplete from './components/vue-typeahead-ddl.vue'
-import HelloWorld from './components/HelloWorld.vue'
 import axios  from 'axios'
 export default {
   /* eslint-disable */
   name: 'app',
   components: {
-    HelloWorld,
     autocomplete
   },
   data() {

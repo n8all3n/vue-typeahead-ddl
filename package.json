@@ -1,7 +1,8 @@
 {
   "name": "vue-typeahead-ddl",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "author": "Nathan Allen <n8all3n@gmail.com>",
+  "license": "mit",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
