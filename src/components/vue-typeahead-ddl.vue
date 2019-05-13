@@ -2,6 +2,7 @@
   <div class="autocomplete">
     <input class="autocomplete-input"
       type="text"
+      :placeholder="placeholder"
       @input="onChange($event.target.value)"
       :value="value"
       @keydown.down="onArrowDown"
@@ -10,8 +11,8 @@
       @click="onInputClick();"
     />
     <div id="autocomplete-results"  v-show="isOpen" class="autocomplete-results">
-     <span class="loading" v-if="isLoading">Loading...</span>
-      <span v-else-if="!isLoading && results.length == 0">
+      <span class="loading" v-if="isLoading">Loading...</span>
+      <span class="no-results" v-else-if="!isLoading && results.length == 0">
         No Results Found...
       </span>
       <span
@@ -40,11 +41,11 @@
         required: false,
         default: false,
       },
-      valueField: {
-        type: String,
-        required: false,
-        default:  ''
-      },
+      // valueField: {
+      //   type: String,
+      //   required: false,
+      //   default:  ''
+      // },
       textField: {
         type: String,
         required: false,
@@ -54,6 +55,16 @@
         type: Number,
         required: false,
         default: 2
+      },
+      placeholder: {
+        type: String,
+        required: false,
+        default: ''
+      },
+      debounceDelay: {
+        type: Number,
+        required: false,
+        default: 500
       }
     },
 
@@ -92,7 +103,6 @@
       onChange(val) {
         // Let's warn the parent that a change was made
         this.$emit('input', val);
-
         if (val && val.length >= this.minChars) {
           // Is the data given by an outside ajax request?
           if (this.isAsync) {
@@ -101,7 +111,7 @@
               this.isLoading = true;
               this.isOpen = true;
               this.$emit('loadResults', val)
-             }, 500);
+             }, this.debounceDelay);
           } else {
             this.isOpen= true
             this.filterResults(val);
@@ -148,7 +158,7 @@
         if (this.arrowCounter >= 0 && this.results.length > 0) {
           var selectedResult = this.results[this.arrowCounter];
           if(selectedResult) {
-            this.$emit('input', selectedResult[this.textField])
+            this.$emit('input', this.isAsync ? selectedResult[this.textField] : selectedResult)
             this.$emit('itemSelected', selectedResult);
             this.isOpen = false;
             this.arrowCounter = -1;
@@ -207,7 +217,7 @@
     z-index: 9999;
   }
 
-  .autocomplete-result {
+  .autocomplete-result, .loading, .no-results {
     position: relative;
     display: block;
     background-color: #fff;

@@ -1,5 +1,10 @@
 # vue-typeahead-ddl
 
+View documentation and examples at: [https://n8all3n.github.io/vue-typeahead-ddl/](https://n8all3n.github.io/vue-typeahead-ddl/)  
+
+Check out the source for a complete example: [https://github.com/n8all3n/vue-typeahead-ddl/blob/master/src/App.vue](https://github.com/n8all3n/vue-typeahead-ddl/blob/master/src/App.vue)
+
+
 ## Project setup
 ```
 npm install
