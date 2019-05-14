@@ -49,6 +49,40 @@
                 </div>         
             </div>
         </div>
+        <div class="card example-card">
+          <div class="card-body">
+              <h2>Tag Mode - Simple Example with Static List</h2>
+              <div class="row">
+                  <autocomplete class="col-4" :tagMode="true" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-bind:tags="fruitTags"  />
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <strong>Configuration:</strong>
+                  <br>
+                  <code>
+                      
+                  </code>
+                </div>
+              </div>         
+          </div>
+        </div>
+        <div class="card example-card">
+          <div class="card-body">
+              <h2>Tag Mode - API to Github users</h2>
+              <div class="row">
+                  <autocomplete class="col-4" :placeholder="'Type a github user name'" @loadResults="loadResultsTags" :isAsync="true" :items="tagddlItems" :textField="'login'"  v-model="gitSearchVal" :debounceDelay="200" :tagMode="true" v-bind:tags="gitHubUserNames" />
+              </div> 
+              <div class="row">
+                <div class="col-12">
+                  <strong>Configuration:</strong>
+                  <br>
+                  <code>
+                      
+                  </code>
+                </div>
+              </div>         
+          </div>
+        </div>
         <hr />
         <h2>Props</h2>
         <table class="table">
@@ -148,7 +182,12 @@ export default {
       ddlItems: [],
       searchVal: '',
       fruitVal: '',
-      userSelected: {}
+      fruitTags: [],
+      userSelected: {},
+
+      tagddlItems: [],
+      gitHubUserNames: [],
+      gitSearchVal: ''
     }
   },
   methods: {
@@ -162,10 +201,22 @@ export default {
         console.log(err);
       });
     },
+    loadResultsTags(search) {
+      var vm = this;
+      axios.get('https://api.github.com/search/users?q=' + search).then(response => {
+          if (response.status === 200) {
+            vm.tagddlItems = response.data.items;
+          }
+      }).catch(function(err){
+        console.log(err);
+      });
+    },
     ddlItemSelected(selectedItem) {
       this.userSelected = selectedItem;
+    },
+    testTags() {
+      console.log(this.fruitTags);
     }
-
   }
 }
 </script>
