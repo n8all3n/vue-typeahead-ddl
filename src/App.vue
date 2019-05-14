@@ -13,14 +13,14 @@
             <div class="card-body">
                 <h2>Simple example with static list</h2>
                 <div class="row">
-                  <autocomplete class="col-4" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-model="fruitVal"  />
+                  <autocomplete class="col-lg-4 col-md-4 col-sm-12" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-model="fruitVal"  />
                 </div>
                 <div class="row">
                   <div class="col-12">
                     <strong>Configuration:</strong>
                     <br>
                     <code>
-                      &lt;autocomplete class="col-4" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-model="fruitVal"  /&gt;
+                      &lt;autocomplete class="col-lg-4 col-md-4 col-sm-12" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-model="fruitVal"  /&gt;
                     </code>
                   </div>
                 </div>         
@@ -30,7 +30,7 @@
             <div class="card-body">
                 <h2>Typeahead with API to Github users</h2>
                 <div class="row">
-                  <autocomplete class="col-4" :placeholder="'Type a github user name'" @loadResults="loadResults" :isAsync="true" :items="ddlItems" :textField="'login'"  v-model="searchVal" @itemSelected="ddlItemSelected" :debounceDelay="200" />
+                  <autocomplete class="col-lg-4 col-md-4 col-sm-12" :placeholder="'Type a github user name'" @loadResults="loadResults" :isAsync="true" :items="ddlItems" :textField="'login'"  v-model="searchVal" @itemSelected="ddlItemSelected" :debounceDelay="200" />
                 </div>
                 <div class="row">
                   <div class="col-12">
@@ -43,7 +43,7 @@
                     <strong>Configuration:</strong>
                     <br>
                     <code>
-                       &lt;autocomplete class="col-4" :placeholder="'Type a github user name'" @loadResults="loadResults" :isAsync="true" :items="ddlItems" :textField="'login'"  v-model="searchVal" @itemSelected="ddlItemSelected" :debounceDelay="200" /&gt;
+                       &lt;autocomplete class="col-lg-4 col-md-4 col-sm-12" :placeholder="'Type a github user name'" @loadResults="loadResults" :isAsync="true" :items="ddlItems" :textField="'login'"  v-model="searchVal" @itemSelected="ddlItemSelected" :debounceDelay="200" /&gt;
                     </code>
                   </div>
                 </div>         
@@ -53,7 +53,7 @@
           <div class="card-body">
               <h2>Tag Mode - Simple Example with Static List</h2>
               <div class="row">
-                  <autocomplete class="col-4" :tagMode="true" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-bind:tags="fruitTags"  />
+                  <autocomplete class="col-lg-4 col-md-4 col-sm-12" :tagMode="true" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-bind:tags="fruitTags"  />
               </div>
               <div class="row">
                 <div class="col-12">
@@ -63,7 +63,7 @@
                   <strong>Configuration:</strong>
                   <br>
                   <code>
-                      &lt;autocomplete class="col-4" :tagMode="true" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-bind:tags="fruitTags"  /&gt;
+                      &lt;autocomplete class="col-lg-4 col-md-4 col-sm-12" :tagMode="true" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-bind:tags="fruitTags"  /&gt;
                   </code>
                 </div>
               </div>         
@@ -73,7 +73,7 @@
           <div class="card-body">
               <h2>Tag Mode - API to Github users</h2>
               <div class="row">
-                <autocomplete class="col-4" :placeholder="'Type a github user name'" @loadResults="loadResultsTags" :isAsync="true" :items="tagddlItems" :textField="'login'"  v-model="gitSearchVal" :debounceDelay="200" :tagMode="true" v-bind:tags="gitHubUserNames" />
+                <autocomplete class="col-lg-4 col-md-4 col-sm-12" :placeholder="'Type a github user name'" @loadResults="loadResultsTags" :isAsync="true" :items="tagddlItems" :textField="'login'"  v-model="gitSearchVal" :debounceDelay="200" :tagMode="true" v-bind:tags="gitHubUserNames" />
               </div> 
               <div class="row">
                 <div class="col-12">
@@ -83,7 +83,7 @@
                   <strong>Configuration:</strong>
                   <br>
                   <code>
-                    &lt;autocomplete class="col-4" :placeholder="'Type a github user name'" @loadResults="loadResultsTags" :isAsync="true" :items="tagddlItems" :textField="'login'"  v-model="gitSearchVal" :debounceDelay="200" :tagMode="true" v-bind:tags="gitHubUserNames" /&gt;
+                    &lt;autocomplete class="col-lg-4 col-md-4 col-sm-12" :placeholder="'Type a github user name'" @loadResults="loadResultsTags" :isAsync="true" :items="tagddlItems" :textField="'login'"  v-model="gitSearchVal" :debounceDelay="200" :tagMode="true" v-bind:tags="gitHubUserNames" /&gt;
                   </code>
                 </div>
               </div>         
