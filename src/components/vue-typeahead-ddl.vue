@@ -111,13 +111,14 @@
     methods: {
       tagRemoveClick(index) {
         this.$delete(this.tags, index)
+        this.$emit('tagDeleted');
       },
       onInputClick() {
         var passesMin = this.tagMode ? this.passesMinChars(this.tagInputValue) : this.passesMinChars(this.value);
+        var filterVal = this.tagMode ? this.tagInputValue : this.value
         if (passesMin) {
           if (this.isAsync) {
             this.isLoading = true;
-            var filterVal = this.tagMode ? this.tagInputValue : this.value
             this.$emit('loadResults', filterVal);
             this.isOpen = true;
           } else {
@@ -125,11 +126,7 @@
           }
         } else {
           if (!this.isAsync) {
-            if (this.tagMode) {
-              this.filterResults(this.tagInputValue);
-            } else {
-               this.filterResults(this.search);
-            }
+            this.filterResults(filterVal);
             this.isOpen = true;
             this.isLoading = false;
           }
@@ -206,12 +203,14 @@
         if (this.arrowCounter >= 0 && this.results.length > 0) {
           var selectedResult = this.results[this.arrowCounter];
           if(selectedResult) {
+
             if (this.tagMode) {
                this.tags.push(this.isAsync ? selectedResult[this.textField] : selectedResult);
             } else {
               this.$emit('input', this.isAsync ? selectedResult[this.textField] : selectedResult)
-              this.$emit('itemSelected', selectedResult);
             }
+
+            this.$emit('itemSelected', selectedResult);
             this.isOpen = false;
             this.arrowCounter = -1;
           }
@@ -321,7 +320,7 @@
     position: absolute;
     content: '';
     width: 100%;
-    height: .125em; /* cross thickness */
+    height: .125em;
     background-color: black;
   }
 

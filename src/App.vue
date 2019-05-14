@@ -7,7 +7,7 @@
       <div class="starter-template">
         <h1 id="home">vue-typeahead-ddl</h1>
         <p class="lead">
-          A simple to use typeahead dropdown created in Vue with no dependencies
+          A simple to use typeahead dropdown created in Vue
         </p>
         <div class="card example-card">
             <div class="card-body">
@@ -57,10 +57,13 @@
               </div>
               <div class="row">
                 <div class="col-12">
+                  <p>
+                    Tag mode is similar to the standard configuration but adds <code>:tagMode="true"</code> to indicate that tags should be displayed and also adds <code>v-bind:tags</code> which is the model variable.
+                  </p>
                   <strong>Configuration:</strong>
                   <br>
                   <code>
-                      
+                      &lt;autocomplete class="col-4" :tagMode="true" :placeholder="'Type a fruit'" :items="[ 'Apple', 'Banana', 'Orange', 'Mango', 'Pear', 'Peach', 'Grape', 'Tangerine', 'Pineapple']" v-bind:tags="fruitTags"  /&gt;
                   </code>
                 </div>
               </div>         
@@ -70,14 +73,17 @@
           <div class="card-body">
               <h2>Tag Mode - API to Github users</h2>
               <div class="row">
-                  <autocomplete class="col-4" :placeholder="'Type a github user name'" @loadResults="loadResultsTags" :isAsync="true" :items="tagddlItems" :textField="'login'"  v-model="gitSearchVal" :debounceDelay="200" :tagMode="true" v-bind:tags="gitHubUserNames" />
+                <autocomplete class="col-4" :placeholder="'Type a github user name'" @loadResults="loadResultsTags" :isAsync="true" :items="tagddlItems" :textField="'login'"  v-model="gitSearchVal" :debounceDelay="200" :tagMode="true" v-bind:tags="gitHubUserNames" />
               </div> 
               <div class="row">
                 <div class="col-12">
+                  <p>
+                   Configuration is the same as the non-tag mode but <code>:tagMode="true"</code> is added, and <code>v-model</code> is replaced with <code>v-bind:tags</code>.
+                  </p>
                   <strong>Configuration:</strong>
                   <br>
                   <code>
-                      
+                    &lt;autocomplete class="col-4" :placeholder="'Type a github user name'" @loadResults="loadResultsTags" :isAsync="true" :items="tagddlItems" :textField="'login'"  v-model="gitSearchVal" :debounceDelay="200" :tagMode="true" v-bind:tags="gitHubUserNames" /&gt;
                   </code>
                 </div>
               </div>         
@@ -139,6 +145,22 @@
                 A custom debounce delay if using with <code>isAsync</code>
               </td>
             </tr>
+            <tr>
+              <td>tagMode</td>
+              <td><code>Boolean</code></td>
+              <td><code>false</code></td>
+              <td>
+                Set to <code>true</code> to use tagging mode
+              </td>
+            </tr>
+            <tr>
+              <td>tags</td>
+              <td><code>Array</code></td>
+              <td><code>[]</code></td>
+              <td>
+                Array of tags selected. Use this property instead of <code>v-model</code> when <code>tagMode</code> is <code>true</code>
+              </td>
+            </tr>
           </tbody>
         </table>
         <hr />
@@ -159,6 +181,10 @@
               <td>itemSelected</td>
               <td>Triggered when an item is selected. The item that was selected is returned.</td>
             </tr>
+            <tr>
+              <td>tagDeleted</td>
+              <td>Triggered when a tag is deleted</td>
+            </tr>
           </tbody>
          </table>
       </div>
@@ -171,20 +197,17 @@
 import autocomplete from './components/vue-typeahead-ddl.vue'
 import axios  from 'axios'
 export default {
-  /* eslint-disable */
   name: 'app',
   components: {
     autocomplete
   },
   data() {
     return{
-      ddlLoaded: false,
       ddlItems: [],
       searchVal: '',
       fruitVal: '',
       fruitTags: [],
       userSelected: {},
-
       tagddlItems: [],
       gitHubUserNames: [],
       gitSearchVal: ''
@@ -213,9 +236,6 @@ export default {
     },
     ddlItemSelected(selectedItem) {
       this.userSelected = selectedItem;
-    },
-    testTags() {
-      console.log(this.fruitTags);
     }
   }
 }
@@ -225,10 +245,6 @@ export default {
   body {
     padding-top: 5rem;
   }
-  .starter-template {
-    padding: 3rem 1.5rem;
-    position: relative;
-  }
 
   .example-card {
     margin-bottom: 2rem;
@@ -237,16 +253,5 @@ export default {
   .type-col {
     width: 10%;
   }
-/* #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-} */
 
-/* .autocomplete-result:hover {
-  background-color: red;
-} */
 </style>
